@@ -39,7 +39,7 @@ function displayItems() {
 function buyProduct(connection) {
     inquirer.prompt([
         {
-            message: "What is the ID# of the product you'd like to bid?",
+            message: "What is the ID# of the product you'd like to buy?",
             name: "product_id",
             type: "number",
         },
@@ -55,12 +55,21 @@ function buyProduct(connection) {
             queries.getProductFromId(connection, productId, function (err, res) {
                 if (err) throw err;
                 
-                const stockQuantity = res[0].stock_quantity
+                const productName = res[0].product_name;
+                const stockQuantity = res[0].stock_quantity;
+                const productPrice = res[0].price;
 
                 if(stockQuantity >= purchaseQuantity) {
                     const updatedQuantity = stockQuantity - purchaseQuantity;
                     queries.updateProductQuantity(connection, updatedQuantity, productId, function (err, res){
                         if (err) throw err;
+
+                    console.log(`
+                    You purchased ${purchaseQuantity} of "${productName}". 
+                    You spent ${productPrice * purchaseQuantity} dollars.
+                    ${updatedQuantity} of "${productName}" now remain.
+                    `);
+                        
                         connection.end();
                     }) 
                 } else {

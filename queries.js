@@ -16,7 +16,7 @@ function getProductFromId(connection, id, callback) {
 //update one product stock_quantity
     //UPDATE products SET stock_quantity = ${quantity} WHERE item_id = ${productId}
 function updateProductQuantity(connection, quantity, id, callback) {
-   console.log("This is updated")
+//    console.log("This is updated")
     connection.query(`UPDATE products SET stock_quantity = ${quantity} WHERE item_id = ${id}`, callback)
 }
 
